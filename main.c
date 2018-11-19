@@ -1,5 +1,9 @@
 #include <GL/glut.h>
 
+int ball1_center[3] = {-2,-2,0};
+int ball5_center[3]= {2,-2,0};
+
+
 void iluminacao(){
     //define a posição e parâmetros da luz 0
     float position[4] = {5.0f, 5.0f, 5.0f, 1.0f};
@@ -26,7 +30,7 @@ int init(){
 
     glMatrixMode(GL_MODELVIEW); //define que a matrix é a model view
     glLoadIdentity(); //carrega a matrix de identidade
-    gluLookAt(0.0, 0.0, 5.0, //posição da câmera
+    gluLookAt(1, 1, 1, //posição da câmera
               0.0, 0.0, 0.0, //para onde a câmera aponta
               0.0, 1.0, 0.0); //vetor viewup
     glMatrixMode(GL_PROJECTION); //define que a matrix é a de projeção
@@ -53,32 +57,114 @@ void display(){
 
     //define que a matrix é a a model view
     glMatrixMode(GL_MODELVIEW);
-    glTranslatef(-2,-2,0);
     glEnable(GL_LINE_SMOOTH);
+    glLineWidth(4);
     glBegin(GL_LINES);
-      glLineWidth(0.1);
-      glVertex3f(0,0,0);
-      glVertex3f(0,3,0);
+        glColor3f(0.0, 0.0, 0.0);
+        //ball 1 lines
+        glVertex3f(-2,-1.5,0);
+        glVertex3f(-2,3,-2);
+
+        glVertex3f(-2,-1.5,0);
+        glVertex3f(-2,3,2);
+
+        //ball 2 lines
+        glVertex3f(-1,-1.5,0);
+        glVertex3f(-1,3,-2);
+
+        glVertex3f(-1,-1.5,0);
+        glVertex3f(-1,3,2);
+
+        //ball 3 lines
+        glVertex3f(0,-1.5,0);
+        glVertex3f(0,3,-2);
+
+        glVertex3f(0,-1.5,0);
+        glVertex3f(0,3,2);
+
+        //ball 4 lines
+        glVertex3f(1,-1.5,0);
+        glVertex3f(1,3,-2);
+
+        glVertex3f(1,-1.5,0);
+        glVertex3f(1,3,2);
+
+        //ball 5 lines
+        glVertex3f(2,-1.5,0);
+        glVertex3f(2,3,2);
+
+        glVertex3f(2,-1.5,0);
+        glVertex3f(2,3,-2);
     glEnd();
-    glutSolidSphere(0.5, 40, 40);
-    glTranslatef(1,0,0);
-    glutSolidSphere(0.5, 40, 40);
-    glTranslatef(1,0,0);
-    glutSolidSphere(0.5, 40, 40);
-    glTranslatef(1,0,0);
-    glutSolidSphere(0.5, 40, 40);
+    glLineWidth(10);
+    glBegin(GL_LINES);
+        //bars
+        glVertex3f(-2,3,-2);
+        glVertex3f(3,3,-2);
+
+        glVertex3f(-2,3,2);
+        glVertex3f(3,3,2);
+
+        //support 1
+        glVertex3f(-2,3,-2);
+        glVertex3f(-2,6,0);
+
+        glVertex3f(-2,6,0);
+        glVertex3f(-2,3,2);
+
+        glVertex3f(-2,3,-2);
+        glVertex3f(-2,3,2);
+
+        //support 2
+        glVertex3f(3,3,-2);
+        glVertex3f(3,6,0);
+
+        glVertex3f(3,6,0);
+        glVertex3f(3,3,2);
+
+        glVertex3f(3,3,-2);
+        glVertex3f(3,3,2);
+    glEnd();
+
+    glPushMatrix();
+        glTranslatef(-2,-2,0);
+        glutSolidSphere(0.5, 40, 40);
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(-1,-2,0);
+        glutSolidSphere(0.5, 40, 40);
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(0,-2,0);
+        glutSolidSphere(0.5, 40, 40);
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(1,-2,0);
+        glutSolidSphere(0.5, 40, 40);
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(ball5_center[0],ball5_center[1],0);
+        glutSolidSphere(0.5, 40, 40);
+    glPopMatrix();
 
     //força o desenho das primitivas
-    glFlush();
+    glutSwapBuffers();
+}
+
+void Timer(int value){
+    ball5_center[0]+=0.1;
+    ball5_center[1]+=0.1;
+    glutPostRedisplay();
+    glutTimerFunc(1000, Timer, 1);
 }
 
 int main(int argc, char** argv){
     glutInit(&argc,argv);                           //inicializa o GLUT
-    glutInitDisplayMode(GLUT_SINGLE| GLUT_RGB | GLUT_DEPTH);    //configura o modo de display
+    glutInitDisplayMode(GLUT_DOUBLE| GLUT_RGB | GLUT_DEPTH);    //configura o modo de display
     glutInitWindowPosition(200,0);                  //seta a posição inicial da janela
     glutInitWindowSize(400,400);                    //configura a largura e altura da janela de exibição
     glutCreateWindow("Exemplo 4 - Propriedades da Superficie");                 //cria a janela de exibição
-
+    // glutTimerFunc(1000, Timer, 1);
     init();                                         //executa função de inicialização
     glutDisplayFunc(display);
     glutMainLoop();                                  //mostre tudo e espere
