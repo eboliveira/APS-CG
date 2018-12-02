@@ -2,7 +2,7 @@
 
 int ball1_center[3] = {-2,-2,0};
 int ball5_center[3]= {2,-2,0};
-
+int rotate_vector[3] = {0,0,0};
 
 void iluminacao(){
     //define a posição e parâmetros da luz 0
@@ -38,6 +38,7 @@ int init(){
     glOrtho(-5.0, 5.0, -5.0, 5.0, -5.0, 5.0);
 
     iluminacao();
+    return 0;
 }
 
 
